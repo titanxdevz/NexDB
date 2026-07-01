@@ -1,0 +1,34 @@
+{
+  "meta": {
+    "version": "PTDL_v2",
+    "update_url": null
+  },
+  "exported_at": "2026-07-01T12:00:00Z",
+  "name": "NexDB Server",
+  "author": "ansh@nexdb.cloud",
+  "description": "NexDB standalone network document database server.",
+  "features": null,
+  "docker_images": {
+    "ghcr.io/nexdb/nexdb:latest": "ghcr.io/nexdb/nexdb:latest",
+    "debian:bookworm-slim": "debian:bookworm-slim"
+  },
+  "file_denylist": [],
+  "startup": "./nexdb serve {{DB_FILE}} --port {{SERVER_PORT}}",
+  "config": {
+    "files": "{}",
+    "startup": "{\n    \"done\": \"[nexdb-server] Listening on\"\n}",
+    "logs": "{}",
+    "stop": "^C"
+  },
+  "variables": [
+    {
+      "name": "Database File Name",
+      "description": "The name of the database file to load/create.",
+      "env_variable": "DB_FILE",
+      "default_value": "database.nexdb",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|string|max:50"
+    }
+  ]
+}

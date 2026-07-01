@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NexDB — The Embeddable Document Database</title>
+  <meta name="description" content="Embeddable document database combining Redis-speed caching with SQLite-durable persistence. Written in Rust with APIs for Rust, Python, and Node.js.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23ef4444'/><path d='M10 10h4l4 12 4-12h4' stroke='%23fff' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="logo">
+      <span class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      Nex<span style="color:var(--red)">DB</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="getting-started.html">Docs</a>
+      <a href="api.html">API</a>
+      <a href="architecture.html">Architecture</a>
+      <a href="https://github.com/Ayushisingh09/NexDB-Core" target="_blank">GitHub</a>
+      
+      <!-- Global Language Switcher in Navbar -->
+      <div class="nav-lang-picker">
+        <button class="nav-lang-btn" data-lang="rust">Rust</button>
+        <button class="nav-lang-btn" data-lang="python">Python</button>
+        <button class="nav-lang-btn" data-lang="nodejs">Node.js</button>
+      </div>
+
+      <a href="getting-started.html" class="nav-cta btn">Get Started</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg">
+    <div class="orb"></div>
+    <div class="orb"></div>
+  </div>
+  <div class="container">
+    <div class="hero-grid">
+      <div class="animate-in visible">
+        <span class="section-header"><span class="tag">v0.1.0 — Embedded Engine</span></span>
+        <h1>
+          The speed of <span class="gradient-text">Redis</span>.<br>
+          The safety of <span style="color: var(--blue)">SQLite</span>.<br>
+          For any application.
+        </h1>
+        <p class="hero-sub">
+          An embedded, crash-safe document database. Features MongoDB-style JSON collections, Write-Ahead Logging (WAL), automatic indexes, and a built-in TCP server. Access natively in Rust, Python, or Node.js.
+        </p>
+        <div class="hero-buttons">
+          <a href="getting-started.html" class="btn btn-primary">
+            Get Started
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="api.html" class="btn btn-secondary">API Reference</a>
+          <a href="https://github.com/Ayushisingh09/NexDB-Core" target="_blank" class="btn btn-ghost">GitHub</a>
+        </div>
+      </div>
+      
+      <!-- Interactive Hero Code tabs sync'd globally -->
+      <div class="hero-code animate-in visible">
+        <div class="code-tabs">
+          <div class="code-tabs-header">
+            <span class="code-tabs-title">quickstart</span>
+            <div class="code-tabs-nav">
+              <button class="code-tab-btn" data-lang="rust">Rust</button>
+              <button class="code-tab-btn" data-lang="python">Python</button>
+              <button class="code-tab-btn" data-lang="nodejs">Node.js</button>
+            </div>
+            <button class="copy-code-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+          <div class="code-tabs-body">
+            <div class="code-tab-content" data-lang="rust">
+              <pre><code class="language-rust">// Add dependency: nexdb-core = "0.1.0"
+use nexdb_core::NexDb;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Open or create database
+    let db = NexDb::open("app.nex").await?;
+    let users = db.collection("users");
+
+    // Insert JSON document
+    let id = users.insert(serde_json::json!({
+        "name": "Alice", 
+        "age": 30
+    })).await?;
+
+    // Query with filter
+    let results = users.query()
+        .where_clause(r#"{"age": {"$gte": 21}}"#)?
+        .limit(10)
+        .run().await?;
+        
+    Ok(())
+}</code></pre>
+            </div>
+            <div class="code-tab-content" data-lang="python">
+              <pre><code class="language-python"># Install: pip install nexdb
+from nexdb import NexDb
+
+# Open database connection
+with NexDb('app.nex') as db:
+    # Create user collection
+    db.create_collection('users')
+
+    # Insert document with auto UUID
+    user_id = db.insert_auto_id('users', {
+        'name': 'Alice',
+        'age': 30
+    })
+
+    # Retrieve document by ID
+    user = db.get('users', user_id)
+    print(f"Found user: {user['name']}")</code></pre>
+            </div>
+            <div class="code-tab-content" data-lang="nodejs">
+              <pre><code class="language-javascript">// Install: npm install nexdb
+const { NexDb } = require('nexdb');
+
+async function main() {
+  // Initialize and connect
+  const db = new NexDb('app.nex');
+  await db.connect();
+
+  await db.createCollection('users');
+
+  // Insert JSON document
+  const id = await db.insertAutoId('users', {
+    name: 'Alice',
+    age: 30
+  });
+
+  // Get document
+  const user = await db.get('users', id);
+  console.log(`Found: ${user.name}`);
+
+  await db.close();
+}
+
+main().catch(console.error);</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-header animate-in">
+      <span class="tag">Features</span>
+      <h2>Everything a modern database should be</h2>
+      <p>Powerful core capabilities, native library clients, and standalone TCP deployments.</p>
+    </div>
+    
+    <div class="feature-grid">
+      <div class="feature-card animate-in">
+        <div class="icon-wrap" style="color:var(--red); border-color: var(--red-glow)">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <h3>Schemaless Documents</h3>
+        <p>Dynamic JSON document storage supporting nested objects, arrays, and standard datatypes. Built with MongoDB-style collections in mind.</p>
+      </div>
+
+      <div class="feature-card animate-in">
+        <div class="icon-wrap" style="color:var(--green); border-color: var(--green-glow)">
+          <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <h3>WAL Durability</h3>
+        <p>Append-only Write-Ahead Log (WAL) with snapshot-based checkpointing. Protects your in-memory state against crash corruption.</p>
+      </div>
+
+      <div class="feature-card animate-in">
+        <div class="icon-wrap" style="color:var(--blue); border-color: var(--blue-glow)">
+          <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        </div>
+        <h3>Multi-Language Support</h3>
+        <p>Interact with your database using highly optimized wrappers for Python (via stdin/stdout subprocess) and Node.js alongside Rust.</p>
+      </div>
+
+      <div class="feature-card animate-in">
+        <div class="icon-wrap" style="color:var(--purple); border-color: var(--purple-glow)">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3>Auto B-Tree Indexes</h3>
+        <p>Maintains in-memory B-Tree indexes automatically on nested field paths. Drastically speeds up collection scans from O(n) to O(log n).</p>
+      </div>
+
+      <div class="feature-card animate-in">
+        <div class="icon-wrap" style="color:var(--yellow); border-color: var(--yellow-glow)">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+        </div>
+        <h3>TCP Server Mode</h3>
+        <p>Built-in TCP listener running a lean JSON-line protocol. Turn NexDB into a remote server with optional secure JWT-based authorization.</p>
+      </div>
+
+      <div class="feature-card animate-in">
+        <div class="icon-wrap" style="color:var(--blue); border-color: var(--blue-glow)">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <h3>Rich Query Builder</h3>
+        <p>Native Rust QueryBuilder. Provides advanced filtering operators (<code>$eq</code>, <code>$gt</code>, <code>$in</code>, <code>$regex</code>, etc.), multi-field sorting, and pagination.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="code">
+  <div class="container">
+    <div class="section-header animate-in">
+      <span class="tag">Interfaces</span>
+      <h2>Code in your language</h2>
+      <p>Clean, unified APIs across different platforms. Check how to run queries and operations.</p>
+    </div>
+
+    <!-- Global sync'd Code block for detailed CRUD comparison -->
+    <div class="code-tabs animate-in">
+      <div class="code-tabs-header">
+        <span class="code-tabs-title">database-crud-operations</span>
+        <div class="code-tabs-nav">
+          <button class="code-tab-btn" data-lang="rust">Rust</button>
+          <button class="code-tab-btn" data-lang="python">Python</button>
+          <button class="code-tab-btn" data-lang="nodejs">Node.js</button>
+        </div>
+        <button class="copy-code-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
+      </div>
+      <div class="code-tabs-body">
+        <div class="code-tab-content" data-lang="rust">
+          <pre><code class="language-rust">// Insert
+let id = collection.insert(json!({"title": "Fix UI", "done": false})).await?;
+
+// Get by ID
+let doc = collection.get(&id).await?;
+
+// Update
+collection.update(&id, json!({"title": "Fix UI", "done": true})).await?;
+
+// Delete
+collection.delete(&id).await?;
+
+// Count
+let count = collection.count().await?;
+
+// Create index
+collection.create_index("done").await?;</code></pre>
+        </div>
+        <div class="code-tab-content" data-lang="python">
+          <pre><code class="language-python"># Insert
+doc_id = db.insert_auto_id('todos', {'title': 'Fix UI', 'done': False})
+
+# Get by ID
+doc = db.get('todos', doc_id)
+
+# Update
+db.update('todos', doc_id, {'title': 'Fix UI', 'done': True})
+
+# Delete
+db.delete('todos', doc_id)
+
+# Count
+count = db.count('todos')
+
+# Create index
+db.create_index('todos', 'done_idx', 'done')</code></pre>
+        </div>
+        <div class="code-tab-content" data-lang="nodejs">
+          <pre><code class="language-javascript">// Insert
+const id = await db.insertAutoId('todos', { title: 'Fix UI', done: false });
+
+// Get by ID
+const doc = await db.get('todos', id);
+
+// Update
+await db.update('todos', id, { title: 'Fix UI', done: true });
+
+// Delete
+await db.delete('todos', id);
+
+// Count
+const count = await db.count('todos');
+
+// Create index
+await db.createIndex('todos', 'done_idx', 'done');</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stats-section section" id="numbers">
+  <div class="container">
+    <div class="section-header animate-in">
+      <span class="tag">Benchmarks</span>
+      <h2>Designed for real workloads</h2>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card animate-in">
+        <div class="stat-num">100k+</div>
+        <div class="stat-label">Ops / Sec (Reads)</div>
+      </div>
+      <div class="stat-card animate-in">
+        <div class="stat-num">0</div>
+        <div class="stat-label">External Deps</div>
+      </div>
+      <div class="stat-card animate-in">
+        <div class="stat-num">3</div>
+        <div class="stat-label">SDK Clients</div>
+      </div>
+      <div class="stat-card animate-in">
+        <div class="stat-num">&lt; 5ms</div>
+        <div class="stat-label">Avg Write Latency</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section section">
+  <div class="container animate-in">
+    <span class="tag">Get Started</span>
+    <h2>Integrate NexDB in your pipeline</h2>
+    <p>Zero orchestration required. Load the package and run locally.</p>
+    
+    <div class="cta-buttons">
+      <a href="getting-started.html" class="btn btn-primary">Read the Docs</a>
+      <a href="api.html" class="btn btn-secondary">Explore API Reference</a>
+    </div>
+
+    <!-- Sync'd CLI install blocks -->
+    <div class="code-tabs" style="max-width: 480px; margin: 32px auto 0;">
+      <div class="code-tabs-header">
+        <span class="code-tabs-title">installation</span>
+        <div class="code-tabs-nav">
+          <button class="code-tab-btn" data-lang="rust">Cargo</button>
+          <button class="code-tab-btn" data-lang="python">pip</button>
+          <button class="code-tab-btn" data-lang="nodejs">npm</button>
+        </div>
+        <button class="copy-code-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
+      </div>
+      <div class="code-tabs-body">
+        <div class="code-tab-content" data-lang="rust">
+          <pre><code class="language-bash">cargo add nexdb-core</code></pre>
+        </div>
+        <div class="code-tab-content" data-lang="python">
+          <pre><code class="language-bash">pip install nexdb</code></pre>
+        </div>
+        <div class="code-tab-content" data-lang="nodejs">
+          <pre><code class="language-bash">npm install nexdb</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-copy">NexDB Database Engine — MIT Licensed — Created for Ayushisingh09/NexDB</div>
+    <div class="footer-links">
+      <a href="https://github.com/Ayushisingh09/NexDB-Core" target="_blank">GitHub</a>
+      <a href="getting-started.html">Docs</a>
+      <a href="api.html">API</a>
+      <a href="architecture.html">Architecture</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

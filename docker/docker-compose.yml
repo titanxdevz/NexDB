@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  nexdb:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: nexdb_server
+    ports:
+      - "27017:27017"
+    volumes:
+      - nexdb_data:/data
+    restart: unless-stopped
+
+volumes:
+  nexdb_data:
+    driver: local

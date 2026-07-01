@@ -1,0 +1,17 @@
+{
+  "name": "nexdb-sdk",
+  "version": "1.0.0",
+  "description": "Official Node.js client SDK for connecting to NexDB network server instances",
+  "main": "index.js",
+  "keywords": [
+    "database",
+    "nexdb",
+    "nosql",
+    "client",
+    "sdk",
+    "tcp"
+  ],
+  "author": "Ansh Singh",
+  "license": "MIT",
+  "dependencies": {}
+}

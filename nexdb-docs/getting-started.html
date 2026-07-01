@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Getting Started — NexDB Documentation</title>
+  <meta name="description" content="Install NexDB, write your first application, and explore every feature — Rust API, Python, Node.js, CLI, Query Builder, indexes, WAL, TCP server, and migration engine.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23ef4444'/><path d='M10 10h4l4 12 4-12h4' stroke='%23fff' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="logo">
+      <span class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      Nex<span style="color:var(--red)">DB</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="getting-started.html" class="active">Docs</a>
+      <a href="api.html">API</a>
+      <a href="architecture.html">Architecture</a>
+      <a href="https://github.com/Ayushisingh09/NexDB-Core" target="_blank">GitHub</a>
+      
+      <!-- Global Language Switcher in Navbar -->
+      <div class="nav-lang-picker">
+        <button class="nav-lang-btn" data-lang="rust">Rust</button>
+        <button class="nav-lang-btn" data-lang="python">Python</button>
+        <button class="nav-lang-btn" data-lang="nodejs">Node.js</button>
+      </div>
+
+      <a href="getting-started.html" class="nav-cta btn">Get Started</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container docs-layout">
+  <aside class="docs-sidebar">
+    <h3>Getting Started</h3>
+    <ul>
+      <li><a href="#installation">Installation</a></li>
+      <li><a href="#quick-start">Quick Start</a></li>
+    </ul>
+    <h3>Core Features</h3>
+    <ul>
+      <li><a href="#crud">CRUD Operations</a></li>
+      <li><a href="#query-builder">Query Builder</a></li>
+      <li><a href="#indexes">Indexes</a></li>
+      <li><a href="#wal">WAL and Checkpoint</a></li>
+    </ul>
+    <h3>Deploy & Manage</h3>
+    <ul>
+      <li><a href="#serve">TCP Server</a></li>
+      <li><a href="#import-export">Import & Export</a></li>
+      <li><a href="#migrate">Migration Engine</a></li>
+      <li><a href="#completions">Shell Completions</a></li>
+      <li><a href="#clean">Clean Command</a></li>
+    </ul>
+    <h3>Reference</h3>
+    <ul>
+      <li><a href="#cli">CLI Reference</a></li>
+      <li><a href="#bson">BSON Support</a></li>
+      <li><a href="#benchmarks">Benchmarks</a></li>
+    </ul>
+  </aside>
+
+  <article class="docs-content">
+    <h1>Getting Started</h1>
+    <p class="lead">Everything you need to install NexDB, write your first application, and leverage its high-performance document capabilities in your language of choice.</p>
+
+    <!-- Language indicator alert at top of docs -->
+    <div class="docs-lang-indicator">
+      <span class="docs-lang-label">Viewing examples in:</span>
+      <div class="docs-lang-options">
+        <button class="docs-lang-option" data-lang="rust">Rust</button>
+        <button class="docs-lang-option" data-lang="python">Python</button>
+        <button class="docs-lang-option" data-lang="nodejs">Node.js</button>
+      </div>
+    </div>
+
+    <section id="installation">
+      <h2>Installation</h2>
+      <p>NexDB provides native libraries and package integrations for Rust, Python, and Node.js. Select your language to view installation steps.</p>
+
+      <div class="code-tabs">
+        <div class="code-tabs-header">
+          <span class="code-tabs-title">install-dependency</span>
+          <div class="code-tabs-nav">
+            <button class="code-tab-btn" data-lang="rust">Rust</button>
+            <button class="code-tab-btn" data-lang="python">Python</button>
+            <button class="code-tab-btn" data-lang="nodejs">Node.js</button>
+          </div>
+          <button class="copy-code-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+        <div class="code-tabs-body">
+          <div class="code-tab-content" data-lang="rust">
+            <p>Add <code>nexdb-core</code> to your <code>Cargo.toml</code> dependencies:</p>
+            <pre><code class="language-rust">[dependencies]
+nexdb-core = "0.1.0"
+serde_json = "1.0"
+tokio = { version = "1.0", features = ["full"] }</code></pre>
+            <p>To enable optional binary BSON decoding features, compile with the <code>bson</code> flag:</p>
+            <pre><code class="language-rust">nexdb-core = { version = "0.1.0", features = ["bson"] }</code></pre>
+          </div>
+          <div class="code-tab-content" data-lang="python">
+            <p>Install the Python client via pip:</p>
+            <pre><code class="language-bash">pip install nexdb</code></pre>
+            <div class="alert alert-note">
+              <div class="alert-icon">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              </div>
+              <div class="alert-content">
+                <p><strong>Note:</strong> The Python client compiles the underlying Rust engine binary automatically during installation. Ensure you have the <code>rustc</code> toolchain installed on your machine.</p>
+              </div>
+            </div>
+          </div>
+          <div class="code-tab-content" data-lang="nodejs">
+            <p>Install the Node.js client package via npm:</p>
+            <pre><code class="language-bash">npm install nexdb</code></pre>
+            <div class="alert alert-tip">
+              <div class="alert-icon">
+                <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <div class="alert-content">
+                <p><strong>Tip:</strong> The Node.js package downloads the appropriate pre-compiled high-performance Rust binary automatically based on your OS architecture during installation.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="quick-start">
+      <h2>Quick Start</h2>
+      <p>Learn how to open a database file, create a collection, insert a JSON document, and retrieve it.</p>
+
+      <div class="code-tabs">
+        <div class="code-tabs-header">
+          <span class="code-tabs-title">quickstart-example</span>
+          <div class="code-tabs-nav">
+            <button class="code-tab-btn" data-lang="rust">Rust</button>
+            <button class="code-tab-btn" data-lang="python">Python</button>
+            <button class="code-tab-btn" data-lang="nodejs">Node.js</button>
+          </div>
+          <button class="copy-code-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+        <div class="code-tabs-body">
+          <div class="code-tab-content" data-lang="rust">
+            <pre><code class="language-rust">use nexdb_core::{NexDb, Document};
+use serde_json::json;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Open a database file (created automatically if missing)
+    let db = NexDb::open("mydb.nex").await?;
+    
+    // Collections are created implicitly when accessed
+    let collection = db.collection("users");
+    
+    // Insert a document with explicit ID
+    collection.insert("u1", Document::from_value(json!({
+        "name": "Alice",
+        "age": 30,
+        "city": "Berlin"
+    }))).await?;
+    
+    // Retrieve the document
+    let user_doc = collection.get("u1").await?;
+    println!("Retrieved user: {}", user_doc.to_json());
+    
+    Ok(())
+}</code></pre>
+          </div>
+          <div class="code-tab-content" data-lang="python">
+            <pre><code class="language-python">from nexdb import NexDb
+
+# Open database file connection
+db = NexDb('mydb.nex')
+db.connect()
+
+# Create collection handle
+db.create_collection('users')
+
+# Insert document with custom key
+db.insert('users', 'u1', {
+    'name': 'Alice',
+    'age': 30,
+    'city': 'Berlin'
+})
+
+# Retrieve document
+user = db.get('users', 'u1')
+print(f"Retrieved user: {user}")
+
+db.close()</code></pre>
+          </div>
+          <div class="code-tab-content" data-lang="nodejs">
+            <pre><code class="language-javascript">const { NexDb } = require('nexdb');
+
+async function main() {
+  // Initialize and connect to subprocess REPL
+  const db = new NexDb('mydb.nex');
+  await db.connect();
+
+  // Create collection
+  await db.createCollection('users');
+
+  // Insert key-value document
+  await db.insert('users', 'u1', {
+    name: 'Alice',
+    age: 30,
+    city: 'Berlin'
+  });
+
+  // Get document by ID
+  const user = await db.get('users', 'u1');
+  console.log('Retrieved user:', user);
+
+  await db.close();
+}
+
+main().catch(console.error);</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <p>You can also complete the same operations from your shell using the CLI tool:</p>
+      <pre><code class="language-bash"># Create and insert
+cargo nexdb insert mydb.nex users u1 '{"name":"Alice","age":30,"city":"Berlin"}'
+
+# Get document
+cargo nexdb get mydb.nex users u1</code></pre>
+    </section>
+
+    <section id="crud">
+      <h2>CRUD Operations</h2>
+      <p>NexDB supports typical JSON collection methods to insert, query, update, delete, check existence, and count documents.</p>
+
+      <div class="code-tabs">
+        <div class="code-tabs-header">
+          <span class="code-tabs-title">crud-reference</span>
+          <div class="code-tabs-nav">
+            <button class="code-tab-btn" data-lang="rust">Rust</button>
+            <button class="code-tab-btn" data-lang="python">Python</button>
+            <button class="code-tab-btn" data-lang="nodejs">Node.js</button>
+          </div>
+          <button class="copy-code-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+        <div class="code-tabs-body">
+          <div class="code-tab-content" data-lang="rust">
+            <h3>Insert auto-generated UUID</h3>
+            <pre><code class="language-rust">// Returns String ID (UUID v4)
+let id = collection.insert_auto_id(Document::from_value(json!({
+    "item": "canvas",
+    "qty": 100
+}))).await?;</code></pre>
+            
+            <h3>Get Document</h3>
+            <pre><code class="language-rust">let doc = collection.get(&id).await?; // Returns NexDbResult<Document></code></pre>
+
+            <h3>Update (Replace Document)</h3>
+            <pre><code class="language-rust">collection.update(&id, Document::from_value(json!({
+    "item": "canvas",
+    "qty": 150,
+    "updated": true
+}))).await?;</code></pre>
+
+            <h3>Delete Document</h3>
+            <pre><code class="language-rust">collection.delete(&id).await?;</code></pre>
+
+            <h3>Count Documents</h3>
+            <pre><code class="language-rust">let total = collection.count().await?; // Returns usize</code></pre>
+
+            <h3>Exists Check</h3>
+            <pre><code class="language-rust">let exists = collection.exists(&id).await?; // Returns bool</code></pre>
+          </div>
+          <div class="code-tab-content" data-lang="python">
+            <h3>Insert auto-generated UUID</h3>
+            <pre><code class="language-python"># Returns generated string UUID
+id = db.insert_auto_id('inventory', {
+    'item': 'canvas',
+    'qty': 100
+})</code></pre>
+            
+            <h3>Get Document</h3>
+            <pre><code class="language-python">doc = db.get('inventory', id) # Returns dict</code></pre>
+
+            <h3>Update (Replace Document)</h3>
+            <pre><code class="language-python">db.update('inventory', id, {
+    'item': 'canvas',
+    'qty': 150,
+    'updated': True
+})</code></pre>
+
+            <h3>Delete Document</h3>
+            <pre><code class="language-python">db.delete('inventory', id)</code></pre>
+
+            <h3>Count Documents</h3>
+            <pre><code class="language-python">total = db.count('inventory') # Returns int</code></pre>
+          </div>
+          <div class="code-tab-content" data-lang="nodejs">
+            <h3>Insert auto-generated UUID</h3>
+            <pre><code class="language-javascript">// Returns generated string UUID
+const id = await db.insertAutoId('inventory', {
+  item: 'canvas',
+  qty: 100
+});</code></pre>
+            
+            <h3>Get Document</h3>
+            <pre><code class="language-javascript">const doc = await db.get('inventory', id); // Returns object</code></pre>
+
+            <h3>Update (Replace Document)</h3>
+            <pre><code class="language-javascript">await db.update('inventory', id, {
+  item: 'canvas',
+  qty: 150,
+  updated: true
+});</code></pre>
+
+            <h3>Delete Document</h3>
+            <pre><code class="language-javascript">await db.delete('inventory', id);</code></pre>
+
+            <h3>Count Documents</h3>
+            <pre><code class="language-javascript">const total = await db.count('inventory'); // Returns number</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="query-builder">
+      <h2>Query Builder</h2>
+      <p>The query engine allows filtered document retrieval. You can query natively in Rust using a fluent query builder, or send filtering parameters over the TCP connection.</p>
+      
+      <div class="alert alert-note">
+        <div class="alert-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        </div>
+        <div class="alert alert-content">
+          <p><strong>Note:</strong> Python, Node.js, and CLI client applications communicate with a running NexDB server instance via a TCP socket connection using a database connection string URL.</p>
+        </div>
+      </div>
+
+      <p>Here is how to run a query containing sorting, pagination limits, and operators in Rust:</p>
+      <pre><code class="language-rust">let results: Vec&lt;Document&gt; = collection
+    .query()
+    .where_clause(r#"{"age": {"$gte": 21, "$lt": 65}, "city": "Berlin"}"#)?
+    .sort("name", true) // Sort by name ascending
+    .skip(10)          // Pagination skip
+    .limit(20)         // Pagination limit
+    .run().await?;</code></pre>
+
+      <h3>Supported Query Operators</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Operator</th>
+            <th>Description</th>
+            <th>JSON Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>$eq</code></td><td>Equal (implicit if omitted)</td><td><code>{"age": 30}</code></td></tr>
+          <tr><td><code>$ne</code></td><td>Not equal to</td><td><code>{"age": {"$ne": 30}}</code></td></tr>
+          <tr><td><code>$gt</code></td><td>Greater than</td><td><code>{"age": {"$gt": 21}}</code></td></tr>
+          <tr><td><code>$gte</code></td><td>Greater than or equal to</td><td><code>{"age": {"$gte": 18}}</code></td></tr>
+          <tr><td><code>$lt</code></td><td>Less than</td><td><code>{"age": {"$lt": 65}}</code></td></tr>
+          <tr><td><code>$lte</code></td><td>Less than or equal to</td><td><code>{"age": {"$lte": 99}}</code></td></tr>
+          <tr><td><code>$in</code></td><td>Exists in list</td><td><code>{"city": {"$in": ["Berlin", "Rome"]}}</code></td></tr>
+          <tr><td><code>$nin</code></td><td>Does not exist in list</td><td><code>{"city": {"$nin": ["Paris"]}}</code></td></tr>
+          <tr><td><code>$exists</code></td><td>Field presence check</td><td><code>{"email": {"$exists": true}}</code></td></tr>
+          <tr><td><code>$regex</code></td><td>Regular expression match</td><td><code>{"name": {"$regex": "^Ali"}}</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="indexes">
+      <h2>Indexes</h2>
+      <p>B-Tree indexes accelerate retrieval speeds. When an index exists on a field, the engine utilizes the B-Tree structure to narrow documents in <code>O(log n)</code> time instead of performing a full collection scan running in <code>O(n)</code>.</p>
+      
+      <div class="code-tabs">
+        <div class="code-tabs-header">
+          <span class="code-tabs-title">index-management</span>
+          <div class="code-tabs-nav">
+            <button class="code-tab-btn" data-lang="rust">Rust</button>
+            <button class="code-tab-btn" data-lang="python">Python</button>
+            <button class="code-tab-btn" data-lang="nodejs">Node.js</button>
+          </div>
+          <button class="copy-code-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+        <div class="code-tabs-body">
+          <div class="code-tab-content" data-lang="rust">
+            <p>Create index on fields (supporting nested structures via dot notation):</p>
+            <pre><code class="language-rust">// Index simple field
+collection.create_index("age").await?;
+
+// Index nested field
+collection.create_index("address.zip").await?;</code></pre>
+          </div>
+          <div class="code-tab-content" data-lang="python">
+            <p>Create index by declaring a unique index handle and field path:</p>
+            <pre><code class="language-python"># create_index(collection, index_name, field_path)
+db.create_index('users', 'age_idx', 'age')
+db.create_index('users', 'zip_idx', 'address.zip')</code></pre>
+          </div>
+          <div class="code-tab-content" data-lang="nodejs">
+            <p>Create index by declaring target collection, name, and field path:</p>
+            <pre><code class="language-javascript">// createIndex(collection, indexName, fieldPath)
+await db.createIndex('users', 'age_idx', 'age');
+await db.createIndex('users', 'zip_idx', 'address.zip');</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="wal">
+      <h2>WAL and Checkpoint</h2>
+      <p>NexDB guarantees safety against sudden server failures by utilizing an append-only Write-Ahead Log. All database updates (inserts, updates, deletes) write to <code>dbname.wal</code> on disk before being applied in memory.</p>
+      
+      <p>On startup (<code>NexDb::open()</code>), any entries present in the WAL that have not yet been snapshot-persisted are replayed automatically. To prevent WAL file size from growing indefinitely, call the <code>checkpoint()</code> operation periodically.</p>
+      
+      <div class="code-tabs">
+        <div class="code-tabs-header">
+          <span class="code-tabs-title">checkpoint-db</span>
+          <div class="code-tabs-nav">
+            <button class="code-tab-btn" data-lang="rust">Rust</button>
+            <button class="code-tab-btn" data-lang="python">Python</button>
+            <button class="code-tab-btn" data-lang="nodejs">Node.js</button>
+          </div>
+          <button class="copy-code-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+        <div class="code-tabs-body">
+          <div class="code-tab-content" data-lang="rust">
+            <p>Write the database snapshot to disk and truncate the active WAL:</p>
+            <pre><code class="language-rust">db.checkpoint().await?;</code></pre>
+          </div>
+          <div class="code-tab-content" data-lang="python">
+            <p>Flush WAL modifications to the underlying disk file:</p>
+            <pre><code class="language-python">db.flush()</code></pre>
+          </div>
+          <div class="code-tab-content" data-lang="nodejs">
+            <p>Flush changes to the file system:</p>
+            <pre><code class="language-javascript">await db.flush();</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="serve">
+      <h2>TCP Server & Remote Hosting</h2>
+      <p>Start a standalone NexDB database server. This mode lets you host the engine remotely (e.g. on panels like Pterodactyl or inside Docker containers) and connect to it from separate client projects using a connection string URL.</p>
+      
+      <pre><code class="language-bash"># Start the TCP server pointing to a databases directory
+cargo run --manifest-path=nexdb-core/Cargo.toml -- serve ./data --port 27017 --metrics-port 28017</code></pre>
+
+      <h3>Connection URI Format</h3>
+      <p>Remote applications connect using the standard NexDB connection URL format:</p>
+      <pre><code class="language-bash">nexdb://[auth_token]@[server_ip_or_domain]:27017/[database_name]</code></pre>
+
+      <h3>Client Integration Examples</h3>
+      <p>Choose your programming language to see how to establish a socket stream connection using the connection string:</p>
+
+      <div class="code-tabs">
+        <div class="code-tabs-header">
+          <span class="code-tabs-title">connection-examples</span>
+          <div class="code-tabs-nav">
+            <button class="code-tab-btn" data-lang="rust">Rust</button>
+            <button class="code-tab-btn" data-lang="python">Python</button>
+            <button class="code-tab-btn" data-lang="nodejs">Node.js</button>
+          </div>
+          <button class="copy-code-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+        <div class="code-tabs-body">
+          <div class="code-tab-content" data-lang="rust">
+            <p>Connect using the native Rust asynchronous client:</p>
+            <pre><code class="language-rust">use nexdb::NexDbClient;
+use serde_json::json;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let mut client = NexDbClient::new("nexdb://token123@127.0.0.1:27017/prod_db")?;
+    client.connect().await?;
+    
+    let res = client.query("insert", json!({
+        "collection": "users",
+        "id": "u1",
+        "document": { "name": "Alice" }
+    })).await?;
+    
+    println!("Response: {:?}", res);
+    Ok(())
+}</code></pre>
+          </div>
+          <div class="code-tab-content" data-lang="python">
+            <p>Connect using the Python client socket wrapper:</p>
+            <pre><code class="language-python">from nexdb import NexDbClient
+
+db = NexDbClient('nexdb://token123@127.0.0.1:27017/prod_db')
+db.connect()
+
+db.insert('users', 'u1', {'name': 'Alice'})
+user = db.get('users', 'u1')
+print("Retrieved:", user)
+db.close()</code></pre>
+          </div>
+          <div class="code-tab-content" data-lang="nodejs">
+            <p>Connect using the Node.js client SDK with built-in connection pipelining:</p>
+            <pre><code class="language-javascript">const { NexDbClient } = require('nexdb-sdk');
+
+async function run() {
+  const db = new NexDbClient('nexdb://token123@127.0.0.1:27017/prod_db');
+  await db.connect();
+  
+  await db.insert('users', 'u1', { name: 'Alice' });
+  const user = await db.get('users', 'u1');
+  console.log("Retrieved:", user);
+  db.close();
+}
+run();</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <h3>Prometheus Cluster Telemetry</h3>
+      <p>NexDB servers expose cluster telemetry metrics in Prometheus format for integration with Grafana, Datadog, or cloud monitoring nodes. The exporter is served at the configured metrics port (default: <code>28017</code>):</p>
+      <pre><code class="language-bash">curl http://localhost:28017/metrics</code></pre>
+      <p>Output values show: <code>nexdb_active_connections</code>, <code>nexdb_reads_total</code>, and <code>nexdb_writes_total</code>.</p>
+    </section>
+
+    <section id="import-export">
+      <h2>Import and Export</h2>
+      <p>Import and export JSON or CSV datasets directly using CLI utilities.</p>
+      
+      <pre><code class="language-bash"># Import a JSON list of documents
+cargo run --release -- import nexdb://secret@127.0.0.1:27017/prod_db users users_data.json
+
+# Export a collection as a JSON list
+cargo run --release -- export nexdb://secret@127.0.0.1:27017/prod_db users output_users.json
+
+# Import from CSV (requires headers on the first line)
+cargo run --release -- import-csv nexdb://secret@127.0.0.1:27017/prod_db users users_data.csv
+
+# Export collection as CSV file
+cargo run --release -- export-csv nexdb://secret@127.0.0.1:27017/prod_db users output_users.csv</code></pre>
+    </section>
+
+    <section id="migrate">
+      <h2>Migration Engine</h2>
+      <p>NexDB provides a built-in migration module to create database backups, restore collections, copy data between engines, or export collections into SQL syntax.</p>
+      
+      <pre><code class="language-bash"># Dump all database collections into JSON files
+cargo run --release -- migrate dump nexdb://secret@127.0.0.1:27017/prod_db ./backup_dir/
+
+# Restore all collections from JSON files
+cargo run --release -- migrate restore nexdb://secret@127.0.0.1:27017/prod_db ./backup_dir/
+
+# Copy all collection data directly between database instances
+cargo run --release -- migrate copy nexdb://secret@127.0.0.1:27017/src_db nexdb://secret@127.0.0.1:27017/dst_db
+
+# Output SQL commands (CREATE TABLE + INSERT) for another SQL dialect (pg/mysql/sqlite)
+cargo run --release -- migrate to-sql nexdb://secret@127.0.0.1:27017/prod_db sqlite > dump.sql
+
+# Import file automatically detecting format
+cargo run --release -- migrate import nexdb://secret@127.0.0.1:27017/prod_db users source_file.json</code></pre>
+
+      <p>You can also run database migrations programmatically inside your Rust application:</p>
+      <pre><code class="language-rust">use nexdb::migrate;
+
+// Dump all collections to backup folder
+let manifest = migrate::dump(&mut client, "./backup_dir/").await?;
+println!("Dumped {} docs", manifest.total_docs);
+
+// Restore collections from folder
+let restore_manifest = migrate::restore(&mut client, "./backup_dir/").await?;</code></pre>
+    </section>
+
+    <section id="completions">
+      <h2>Shell Completions</h2>
+      <p>Generate native autocompletion scripts for shell environments to assist when using CLI commands.</p>
+      <pre><code class="language-bash"># bash shell completion
+cargo run --release -- completions bash > /etc/bash_completion.d/nexdb
+
+# zsh shell completion
+cargo run --release -- completions zsh > /usr/local/share/zsh/site-functions/_nexdb
+
+# fish shell completion
+cargo run --release -- completions fish > ~/.config/fish/completions/nexdb.fish
+
+# powershell completion
+cargo run --release -- completions powershell > $PROFILE</code></pre>
+    </section>
+
+    <section id="clean">
+      <h2>Clean Command</h2>
+      <p>Wipe database files and WAL logs safely from your directories.</p>
+      <pre><code class="language-bash"># Wipes target database files and wal locally on server host
+cargo run --release -- clean ./data/mydb
+
+# Wipes ALL .nexdb / .nex files and corresponding WAL logs under target folder
+cargo run --release -- clean --all ./data/</code></pre>
+    </section>
+
+    <section id="cli">
+      <h2>CLI Reference</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Command</th>
+            <th>Usage Parameters</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>repl</code></td><td><code>&lt;connection_url&gt;</code></td><td>Start interactive REPL shell connected to the server</td></tr>
+          <tr><td><code>serve</code></td><td><code>&lt;data_dir&gt; [--port N]</code></td><td>Start the TCP server using data_dir for storage</td></tr>
+          <tr><td><code>insert</code></td><td><code>&lt;connection_url&gt; &lt;col&gt; &lt;id&gt; &lt;json&gt;</code></td><td>Insert single document via TCP connection</td></tr>
+          <tr><td><code>get</code></td><td><code>&lt;connection_url&gt; &lt;col&gt; &lt;id&gt;</code></td><td>Retrieve document matching ID via TCP connection</td></tr>
+          <tr><td><code>update</code></td><td><code>&lt;connection_url&gt; &lt;col&gt; &lt;id&gt; &lt;json&gt;</code></td><td>Update document matching ID via TCP connection</td></tr>
+          <tr><td><code>delete</code></td><td><code>&lt;connection_url&gt; &lt;col&gt; &lt;id&gt;</code></td><td>Delete document matching ID via TCP connection</td></tr>
+          <tr><td><code>count</code></td><td><code>&lt;connection_url&gt; &lt;col&gt;</code></td><td>Count documents in collection via TCP connection</td></tr>
+          <tr><td><code>collections</code></td><td><code>&lt;connection_url&gt;</code></td><td>List all collection names in database via TCP connection</td></tr>
+          <tr><td><code>create-collection</code></td><td><code>&lt;connection_url&gt; &lt;col&gt;</code></td><td>Create database collection via TCP connection</td></tr>
+          <tr><td><code>drop-collection</code></td><td><code>&lt;connection_url&gt; &lt;col&gt;</code></td><td>Delete database collection via TCP connection</td></tr>
+          <tr><td><code>flush</code></td><td><code>&lt;connection_url&gt;</code></td><td>Force flush database server file modification</td></tr>
+          <tr><td><code>checkpoint</code></td><td><code>&lt;connection_url&gt;</code></td><td>Force database snapshot checkpoint & WAL truncate on server</td></tr>
+          <tr><td><code>import</code></td><td><code>&lt;connection_url&gt; &lt;col&gt; &lt;file.json&gt;</code></td><td>Import JSON file list via TCP connection</td></tr>
+          <tr><td><code>export</code></td><td><code>&lt;connection_url&gt; &lt;col&gt; &lt;file.json&gt;</code></td><td>Export JSON file list via TCP connection</td></tr>
+          <tr><td><code>import-csv</code></td><td><code>&lt;connection_url&gt; &lt;col&gt; &lt;file.csv&gt;</code></td><td>Import CSV file via TCP connection</td></tr>
+          <tr><td><code>export-csv</code></td><td><code>&lt;connection_url&gt; &lt;col&gt; &lt;file.csv&gt;</code></td><td>Export CSV file via TCP connection</td></tr>
+          <tr><td><code>migrate</code></td><td><code>&lt;action&gt; [args]</code></td><td>Run data migrations via TCP connection</td></tr>
+          <tr><td><code>clean</code></td><td><code>&lt;db_path&gt;</code></td><td>Wipe database and WAL log files locally on host server</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="bson">
+      <h2>BSON Support</h2>
+      <p>When compiled with the <code>bson</code> cargo feature, NexDB supports inserting documents formatted in binary JSON (BSON). The engine parses BSON elements transparently into its internal JSON representation.</p>
+      <pre><code class="language-rust">nexdb-core = { version = "0.1.0", features = ["bson"] }</code></pre>
+    </section>
+
+    <section id="benchmarks">
+      <h2>Benchmarks</h2>
+      <p>NexDB includes a Criterion-based performance benchmark suite to measure operation latency and throughput under pressure.</p>
+      <pre><code class="language-bash"># Run all benchmarks
+cargo bench</code></pre>
+
+      <h3>Peak Performance Stats</h3>
+      <p>The following metrics show NexDB's peak throughput on a standard local environment pushing concurrent operation workloads:</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Operation Category</th>
+            <th>Throughput (OPS)</th>
+            <th>Average Latency</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Sustained Writes</strong></td>
+            <td><code>1,875+ OPS</code></td>
+            <td><code>0.53 ms</code></td>
+            <td>Concurrently inserted and fully synced to the Write-Ahead Log (WAL) on disk.</td>
+          </tr>
+          <tr>
+            <td><strong>Sustained Reads</strong></td>
+            <td><code>40,980+ OPS</code></td>
+            <td><code>0.02 ms</code></td>
+            <td>Concurrently read from cached in-memory collection maps.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </article>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-copy">NexDB Database Engine — MIT Licensed — Created for Ayushisingh09/NexDB</div>
+    <div class="footer-links">
+      <a href="https://github.com/Ayushisingh09/NexDB-Core" target="_blank">GitHub</a>
+      <a href="getting-started.html">Docs</a>
+      <a href="api.html">API</a>
+      <a href="architecture.html">Architecture</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

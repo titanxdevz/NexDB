@@ -1,0 +1,53 @@
+# ==============================
+# OS & Editor files
+# ==============================
+Thumbs.db
+.DS_Store
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# ==============================
+# Environment & secrets
+# ==============================
+.env
+.env.local
+.env.*.local
+*.log
+
+# ==============================
+# Dependencies & Build
+# ==============================
+node_modules/
+.next/
+dist/
+out/
+target/
+bin/
+
+# ==============================
+# Python SDK junk
+# ==============================
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+*.egg
+
+# ==============================
+# nexdb-cloud — baaki sab ignore, sirf data/ track
+# ==============================
+nexdb-cloud/*
+!nexdb-cloud/data/
+!nexdb-cloud/data/**
+
+# ==============================
+# nexdb-core (Rust) — sirf target/ ignore
+# ==============================
+nexdb-core/target/

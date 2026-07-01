@@ -1,0 +1,7 @@
+{"ts":1782907146,"c":"users","op":"create_collection","id":"","doc":null}
+{"ts":1782907146,"c":"databases","op":"create_collection","id":"","doc":null}
+{"ts":1782907146,"c":"api_keys","op":"create_collection","id":"","doc":null}
+{"ts":1782907146,"c":"users","op":"insert","id":"xgrtkj3w","doc":{"createdAt":1782907146134,"email":"anshthedev59@gmail.com","name":"ansh SIngh","password":"ansh2323"}}
+{"ts":1782907146,"c":"databases","op":"insert","id":"wxiw99hh","doc":{"createdAt":1782907146134,"name":"free-ejob5bsx","plan":"Free","status":"active","token":"4j84xmay77hh88nog9454l7oslxf47hh","userId":"xgrtkj3w"}}
+{"ts":1782907161,"c":"databases","op":"delete","id":"wxiw99hh","doc":null}
+{"ts":1782907815,"c":"databases","op":"insert","id":"beyl27ga","doc":{"createdAt":1782907814992,"name":"aaaaaaaa","plan":"Free","status":"active","token":"j3q1sf0jat0x5xg49mjr2sqzk2t826r3","userId":"xgrtkj3w"}}

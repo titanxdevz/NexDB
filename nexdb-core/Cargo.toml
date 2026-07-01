@@ -1,0 +1,31 @@
+[package]
+name = "nexdb"
+version = "0.1.0"
+edition = "2021"
+description = "A fast, embeddable document database engine with WAL logging, indexing, and multi-tenant TCP server support."
+license = "MIT"
+repository = "https://github.com/Ayushisingh09/NexDB-Core"
+
+[lib]
+name = "nexdb"
+path = "lib.rs"
+
+[[bin]]
+name = "nexdb"
+path = "main.rs"
+
+[dependencies]
+tokio = { version = "1.35", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+thiserror = "1.0"
+uuid = { version = "1.0", features = ["v4"] }
+clap = { version = "4.4", features = ["derive"], optional = true }
+clap_complete = { version = "4.4", optional = true }
+bson = { version = "2.9", optional = true }
+
+[features]
+bson = ["dep:bson"]
+completions = ["dep:clap", "dep:clap_complete"]
+default = ["completions"]

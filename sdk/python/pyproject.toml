@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nexdb-sdk"
+version = "1.0.0"
+description = "Official Python client SDK for NexDB document database server"
+readme = "README.md"
+requires-python = ">=3.7"
+authors = [
+    { name = "Ansh Singh", email = "ansh@nexdb.cloud" }
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+
+[tool.setuptools]
+py-modules = ["nexdb"]
